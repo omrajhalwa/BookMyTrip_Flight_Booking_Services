@@ -3,6 +3,7 @@ const {StatusCodes} = require('http-status-codes')
 const { BookingRepository} = require('../repositories')
 
 const db = require('../models');
+const {Queue} = require('../config');
 const { FLIGHT_SERVICE } = require('../config/server-config');
 const AppError = require('../utils/errors/app-error');
 const {Enums} = require('../utils/common');
@@ -37,6 +38,8 @@ async function createBooking(data) {
 
 
         await transaction.commit();
+
+        
 
         return booking;
 
@@ -91,7 +94,14 @@ async function makePayment(data) {
         await bookingRepository.update(data.bookingId,{status : BOOKED}, transaction);
 
         await transaction.commit();
+        // console.log('ejofo');
+        Queue.sendData({
+            recepientEmail:data.emailId,
+            subject:'Flight Booked',
+            text: `Booking successfully done for the flight ${data.bookingId}`
+        })
 
+        
 
     } catch (error) {
         await transaction.rollback();

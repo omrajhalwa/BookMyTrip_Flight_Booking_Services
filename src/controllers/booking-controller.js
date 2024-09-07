@@ -7,12 +7,22 @@ const inMemDb={};
 
 async function createBooking(req ,res) {
     try{
-       console.log(req.body);
+
+        const emailId = req.headers['emailid'];
+        console.log(emailId);
+        if(!emailId){
+            return res
+            .status(StatusCodes.BAD_REQUEST)
+            .json({message:'User is not logged in'});
+        }
+        console.log(req);
+       console.log(JSON.parse(Object.keys(req.body)[0]));
+       const object = JSON.parse(Object.keys(req.body)[0]);
 
        const response = await BookingService.createBooking({
-        flightId: req.body.flightId,
-        userId: req.body.userId,
-        noOfSeats : req.body.noOfSeats
+        flightId: object.flightId,
+        userId: object.userId,
+        noOfSeats : object.noOfSeats
        });
 
        SuccessResponse.data = response;
@@ -32,8 +42,20 @@ async function createBooking(req ,res) {
 
 
 async function makePayment(req, res) {
+   
     try {
         
+        console.log(JSON.parse(Object.keys(req.body)[0]));
+        const object = JSON.parse(Object.keys(req.body)[0]);
+
+        const emailId = req.headers['emailid'];
+
+        if(!emailId){
+            return res
+            .status(StatusCodes.BAD_REQUEST)
+            .json({message:'User is not logged in'});
+        }
+
         const idempotencyKey = req.headers['x-idempotency-key'];
            console.log(idempotencyKey);
         if(!idempotencyKey){
@@ -50,9 +72,10 @@ async function makePayment(req, res) {
         }
 
         const response = await BookingService.makePayment({
-            totalCost: req.body.totalCost,
-            userId : req.body.userId,
-            bookingId:req.body.bookingId
+            totalCost: object.totalCost,
+            userId : object.userId,
+            bookingId:object.bookingId,
+            emailId:emailId
         })
         
         inMemDb[idempotencyKey] = idempotencyKey;
