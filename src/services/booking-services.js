@@ -98,7 +98,7 @@ async function makePayment(data) {
         Queue.sendData({
             recepientEmail:data.emailId,
             subject:'Flight Booked',
-            text: `Booking successfully done for the flight ${data.bookingId} and total cost ${data.totalCost}`
+            text: `Booking successfully done for the flight ${data.bookingId} and total cost ${data.totalCost} and user name ${data.emailId}`
         })
 
         
