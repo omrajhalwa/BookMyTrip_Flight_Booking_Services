@@ -16,9 +16,9 @@ async function createBooking(data) {
 
       try {
         
-
-        const flight = await axios.get(`${FLIGHT_SERVICE}/api/v1/flights/${data.flightId}`);
-
+         console.log(data);
+        const flight = await axios.get(`${FLIGHT_SERVICE}/api/v1/flights/${parseInt(data.flightId)}`);
+        console.log(flight);
         const flightData = flight.data.data;
 
         if( data.noOfSeats > flightData.totalSeats ) {
@@ -98,7 +98,7 @@ async function makePayment(data) {
         Queue.sendData({
             recepientEmail:data.emailId,
             subject:'Flight Booked',
-            text: `Booking successfully done for the flight ${data.bookingId}`
+            text: `Booking successfully done for the flight ${data.bookingId} and total cost ${data.totalCost}`
         })
 
         

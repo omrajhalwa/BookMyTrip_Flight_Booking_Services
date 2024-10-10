@@ -7,18 +7,22 @@ const inMemDb={};
 
 async function createBooking(req ,res) {
     try{
-
+          //console.log(req.headers);
         const emailId = req.headers['emailid'];
         console.log(emailId);
+        console.log(1);
         if(!emailId){
             return res
             .status(StatusCodes.BAD_REQUEST)
             .json({message:'User is not logged in'});
         }
-        console.log(req);
-       console.log(JSON.parse(Object.keys(req.body)[0]));
-       const object = JSON.parse(Object.keys(req.body)[0]);
-
+       // console.log(req);
+    //    console.log(typeof req.body);
+    //    console.log(JSON.parse(Object.keys(req.body)[0]));
+    //    const object = JSON.parse(Object.keys(req.body)[0]);
+    //     console.log(object);
+       
+       const object = req.body;
        const response = await BookingService.createBooking({
         flightId: object.flightId,
         userId: object.userId,
@@ -45,8 +49,9 @@ async function makePayment(req, res) {
    
     try {
         
-        console.log(JSON.parse(Object.keys(req.body)[0]));
-        const object = JSON.parse(Object.keys(req.body)[0]);
+        // console.log(JSON.parse(Object.keys(req.body)[0]));
+        // const object = JSON.parse(Object.keys(req.body)[0]);
+        const object = req.body;
 
         const emailId = req.headers['emailid'];
 
@@ -70,6 +75,8 @@ async function makePayment(req, res) {
                      .status(StatusCodes.BAD_REQUEST)
                      .json({message:'Cannot retry on a successful payment'});
         }
+
+        console.log(object);
 
         const response = await BookingService.makePayment({
             totalCost: object.totalCost,
