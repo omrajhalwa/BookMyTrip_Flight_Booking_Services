@@ -7,7 +7,6 @@
   },
   "author": "OM RAJ HALWA",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "amqplib": "^0.10.4",
     "axios": "^1.7.7",
@@ -19,5 +18,6 @@
     "sequelize": "^6.37.3",
     "sequelize-cli": "^6.6.2",
     "winston": "^3.14.2"
-  }
+  },
+  "description": ""
 }
